@@ -29,6 +29,18 @@ jobs:
           repository: MatsuriDayo/nekoray
           ref: main
           submodules: recursive
+      - name: Modify File
+        run: |
+          sed -i 's/QString direct_ip;/QString direct_ip = "geoip:cn\\ngeoip:private";/' main/NekoGui_DataStore.hpp &&
+          sed -i 's/QString direct_domain;/QString direct_domain = "geosite:cn";/' main/NekoGui_DataStore.hpp &&
+          sed -i 's/int language = 0;/int language = 2;/' main/NekoGui_DataStore.hpp &&
+          sed -i 's/bool remember_enable = false;/bool remember_enable = true;/' main/NekoGui_DataStore.hpp &&
+          sed -i 's/int inbound_http_port = -2081;/int inbound_http_port = 2081;/' main/NekoGui_DataStore.hpp &&
+          sed -i 's/block_domain =/block_domain = "";/' main/NekoGui.cpp &&
+          sed -i '/geosite:category-ads-all/d' main/NekoGui.cpp &&
+          sed -i '/domain:/d' main/NekoGui.cpp &&
+          sed -i 's|https://api.github.com/repos/MatsuriDayo/nekoray/releases|https://api.github.com/repos/autoxtls/nekoray-windows/releases|' go/grpc_server/update.go &&
+          sed -i 's|https://matsuricom.pages.dev/|https://autoxtls.github.io/|' ui/mainwindow.cpp
       - name: Go Status
         run: git ls-files go | xargs cat | sha1sum > go_status
       - name: Cache Common Download
